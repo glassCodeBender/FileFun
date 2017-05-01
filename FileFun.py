@@ -62,19 +62,17 @@ class FileFun(object):
         fusers.close()
         return user_list
    """ 
-# read a combination of each username and password in to see if one matches
-
 
 # need a command to close files and exit programs if we have success
 
 
-# read the next 50 lines (this assumes we only read first 50 lines)
 
 """
  create a if __name__ = __main__ command at the end that will determine what happens
  if the program is run from another program. 
 
 """
+# this is sample code for if we only want to read in a range of line.
 """
 with open(pfile_string) as f:
     for i in range(50):
