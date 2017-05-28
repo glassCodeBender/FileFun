@@ -5,11 +5,10 @@ import java.time.LocalDate
 import com.google.common.io.Files
 import scala.io.Source
 /**
-	* Purpose: This program will be used in other classes for common file operations
+	* Purpose: This program will be used in other classes for
+	* common file operations
 	*/
-
 trait FileFun {
-	
 	/*******Function takes a single String and writes it to a file that is generated based on the fileTreeMap***********/
 	def writeToTxtFile(txt: String, file: String): Unit ={
 		val fileName: String = file
@@ -48,16 +47,18 @@ trait FileFun {
 		* If this method is difficult to write, write it as a for loop and then change it to recursion.
 		* @param directories
 		*/
-	
-	def fullDirList(directories: Array[String]) = directories.foldLeft(Array[String]()){(x, y) => x ++: getSubDirList(y)}
+	def fullDirList(directories: Array[String]): Array[String ] = directories.foldLeft( Array[String]() ){ (x, y) => x ++: fullDirList(getSubDirList(y)) }
 
 	def getFullDirList(directories: Array[String]): Array[String] = {
 		def loop(dir: Array[String], accDir: Array[String]): Array[String] = {
 			if (dir.isEmpty) accDir
-			else loop(dir.tail, accDir ++: getFullDirList(getSubDirList(dir.head)))
+			else loop( dir.tail, accDir ++: getFullDirList( getSubDirList( dir.head ) ) )
 		} // END loop()
 		loop(directories, Array[String]())
 	} // END getFullDirList()
+
+	val fullDir: Array[String] = fullDirList(dirList)
+	fullDir.foreach(println)
 
 	def getFullFileList(directories: Array[String]): Array[String] = {
 		def loop(dir: Array[String], accArray: Array[String]): Array[String] = {
@@ -67,7 +68,9 @@ trait FileFun {
 		loop(directories, Array[String]())
 	} // END getFullFileList
 
+
 	def fullFileList(directories: Array[String]) = directories.foldLeft(Array[String]()){(x, y) => x ++ getFileArray(y))}
+
 
 	/***************GENERATE STRING TO USE FOR FILENAMES***************************
 		*   Each time a method calls one of the methods below, they should also     *
@@ -84,6 +87,7 @@ trait FileFun {
 		val dateGen = new LocalDate()
 		return String.format("Txt%s", dateGen.toString)
 	} // END generateFileName()
+
 
 	// convert a file to a Byte Array
 	def fileToByteArray(file: File): Array[Byte] = {
