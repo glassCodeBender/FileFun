@@ -48,6 +48,9 @@ trait FileFun {
 		* If this method is difficult to write, write it as a for loop and then change it to recursion.
 		* @param directories
 		*/
+	
+	def fullDirList(directories: Array[String]) = directories.foldLeft(Array[String]()){(x, y) => x ++: getSubDirList(y)}
+
 	def getFullDirList(directories: Array[String]): Array[String] = {
 		def loop(dir: Array[String], accDir: Array[String]): Array[String] = {
 			if (dir.isEmpty) accDir
