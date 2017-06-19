@@ -1,2 +1,2 @@
 # FileFun
-This is a repository that will help me deal with files in python.
+This repository will help me deal with files in python and scala.
