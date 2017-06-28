@@ -1,7 +1,6 @@
 package com.BigBrainSecurity
 
 import java.io._
-import java.nio.file.Paths
 import java.time.LocalDate
 
 import com.google.common.io.Files
@@ -24,15 +23,14 @@ trait FileFun {
 	def readTxtFromFile(fileName: String): Option[String] = {
 		try {
 			Some(Source.fromFile ( fileName ).getLines.mkString) // read all of the lines from the file as one String.
-		} catch{
+		} catch {
 			case ioe: IOException =>
-				println(ioe + s"There was a problem importing the file $fileName ")
+				println ( s"There was a problem importing the file $fileName.\n" + ioe )
 				None
 			case fnf: FileNotFoundException =>
-				println(fnf + s"The file you tried to $fileName import could not be found")
+				println ( s"The file you tried to $fileName import could not be found\n" + fnf )
 				None
 		}
-			// this technique does not close the file.
 
 	} // END readTxtFromFile()
 
@@ -42,7 +40,9 @@ trait FileFun {
   // DO NOT CHANGE!!!
 	def getDirArray(directoryName: String): Option[Array[String]] = {
 	  try {
-		  Some( ( new File ( directoryName ) ).listFiles.filter ( _.isDirectory ).map ( _.getAbsolutePath ) )
+		  Some( ( new File ( directoryName ) ).listFiles
+			  .filter ( _.isDirectory )
+			  .map ( _.getAbsolutePath ) )
 	  }
 	  catch{
 		  case ioe: IOException =>
@@ -57,7 +57,10 @@ trait FileFun {
 	// DO NOT CHANGE!!!
 	def getDirList(directoryName: String): Option[List[String]] = {
 		try {
-			Some(( new File ( directoryName ) ).listFiles.filter ( _.isDirectory ).map ( _.getAbsolutePath ).toList)
+			Some(( new File ( directoryName ) ).listFiles
+				.filter ( _.isDirectory )
+				.map ( _.getAbsolutePath )
+				.toList)
 		} catch{
 			case ioe: IOException =>
 				println(ioe + s"There was a problem importing the file $directoryName.")
@@ -71,7 +74,10 @@ trait FileFun {
 	// DO NOT CHANGE!!!
 	def getDirVector(directoryName: String): Option[Vector[String]] = {
 		try{
-			Some(( new File(directoryName) ).listFiles.filter(_.isDirectory).map(_.getAbsolutePath).toVector)
+			Some(( new File(directoryName) ).listFiles
+				.filter(_.isDirectory)
+				.map(_.getAbsolutePath)
+				.toVector)
 		}
 		catch{
 			case ioe: IOException =>
@@ -85,7 +91,9 @@ trait FileFun {
 	// I'm removing the filter so that this method will get a list of all directories and files.
 	def getFileList(dirName: String): Option[List[String]] = {
 		try{
-			Some(( new File(dirName) ).listFiles.map(_.getAbsolutePath).toList)
+			Some(( new File(dirName) ).listFiles
+				.map(_.getAbsolutePath)
+				.toList)
 		} catch{
 			case ioe: IOException =>
 				println(ioe + s"There was a problem importing the file $dirName.")
@@ -99,7 +107,9 @@ trait FileFun {
   // DO NOT CHANGE!!!!
 	def getFileArray(directoryName: String): Option[Array[String]] = {
 		try {
-			Some ( ( new File ( directoryName ) ).listFiles.filter ( _.isFile ).map ( _.getAbsolutePath ) )
+			Some ( ( new File ( directoryName ) ).listFiles
+				.filter ( _.isFile )
+				.map ( _.getAbsolutePath ) )
 		}  catch{
 			case ioe: IOException =>
 				println(ioe + s"There was a problem importing the file $directoryName.")
@@ -112,7 +122,10 @@ trait FileFun {
 
 	def getFileVector(directoryName: String): Option[Vector[String]] = {
 		try {
-			Some ( ( new File ( directoryName ) ).listFiles.filter ( _.isFile ).map ( _.getAbsolutePath ).toVector )
+			Some ( ( new File ( directoryName ) ).listFiles
+				.filter ( _.isFile )
+				.map ( _.getAbsolutePath )
+				.toVector )
 		}	catch{
 			case ioe: IOException =>
 				println(ioe + s"There was a problem importing the file $directoryName")
@@ -135,7 +148,7 @@ trait FileFun {
 		val dirList = getDirArray(dir).getOrElse(Array[String]())
 		def loop(directories: Array[String], accList: Array[String]): Array[String] = {
 			if(directories.isEmpty) accList
-			else loop(directories.tail, accList ++: getDirArray(directories.head).getOrElse( Array[String]() ))
+			else loop(directories.tail, accList ++: getDirArray(directories.head).get)
 		}
 		loop( dirList, Array[String]() )
 	} // END getAllDirs()
@@ -146,7 +159,7 @@ trait FileFun {
 
 		def loop ( directories: List[ String ], accList: List[ String ] ): List[ String ] = {
 			if ( directories.isEmpty ) accList
-			else loop ( directories.tail, accList ++: getDirList ( directories.head ).getOrElse( List[String]() ) )
+			else loop ( directories.tail, accList ++: getDirList ( directories.head ).getOrElse( List[String]() ))
 		}
 
 		loop ( dirList, List[String]() )
@@ -158,7 +171,7 @@ trait FileFun {
 
 		def loop ( directories: Vector[ String ], accList: Vector[ String ] ): Vector[ String ] = {
 			if ( directories.isEmpty ) accList
-			else loop ( directories.tail, accList ++: getDirVector ( directories.head ).getOrElse( Vector[String]() ) )
+			else loop ( directories.tail, accList ++: getDirVector ( directories.head ).getOrElse( Vector[String]() ))
 		}
 		loop ( dirList, Vector[String]() )
 	}
@@ -166,7 +179,7 @@ trait FileFun {
 	def getAllFiles(directories: Seq[String]): Array[String] = {
 		def loop(dir: Seq[String], accArray: Array[String]): Array[String] = {
 			if (dir.isEmpty) accArray
-			else loop(dir.tail, accArray ++: getFileArray(directories.head).getOrElse(Array[String]()))
+			else loop(dir.tail, accArray ++: getFileArray(directories.head).getOrElse( Array[String]() ))
 		}
 		loop(directories, Array[String]())
 	} // END getFullFileList
